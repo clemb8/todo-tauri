@@ -1,0 +1,170 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  color: #0f0f0f;
+  background-color: #f6f6f6;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-image: linear-gradient(-30deg, #E6F0FC, #BDE5D1);
+}
+
+h1 {
+  margin: 0;
+  background: #fff;
+  line-height: 1;
+}
+
+h2 {
+  margin: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  line-height: 1;
+  position: relative;
+}
+
+h2::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: -20px;
+  top: 15%;
+  width: 1px;
+  height: 70%;
+  border-left: solid 4px teal;
+}
+
+h2::after {
+  border-radius: 6px;
+  display: block;
+  float: right;
+  background: teal;
+  color: #fff;
+  padding: 4px;
+  min-width: 1.5em;
+  text-align: center;
+}
+
+input {
+  position: absolute;
+  left: -999px;
+}
+
+input:focus {
+  background: rgba(#fff, .4);
+}
+
+input:checked {
+  animation: 0.6s done;
+  counter-increment: done-items;
+}
+
+label {
+  animation: 00.6s pending;
+  display: block;
+  position: relative;
+  padding: 10px 0 10px 40px;
+  border-top: dashed 1px #fff;
+  cursor: pointer;
+  counter-increment: pending-items;
+}
+
+label:hover {
+  background: rgba(#fff, .4);
+}
+
+.done::before {
+  display: none !important;
+  font: var(--fa-font-solid);
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  content: "\f14a";
+}
+
+.pending::before {
+  display: none !important;
+  font: var(--fa-font-solid);
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  content: "\f0c8";
+}
+
+label:before {
+  display: block;
+  position: absolute;
+  left: 10px;
+  top: 8px;
+}
+
+.container {
+  margin: 0;
+  padding-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.todoList {
+  width: 500px;
+  margin: 30px auto;
+  border-top: solid 8px teal;
+  padding: 10px 20px;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.done::after {
+  content: counter(done-items);
+}
+
+.pending::after {
+  content: counter(pending-items);
+}
+
+.svg-inline--fa {
+  position: absolute;
+  left: 10px;
+  top: 15px;
+}
+
+@keyframes done {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+    background: rgba(#fff,.4);
+  }
+
+  50% {
+    opacity: 1;
+    background: rgba(#fff,.4);
+  }
+}
+
+@keyframes pending {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+    background: rgba(#fff,.4);
+  }
+
+  50% {
+    opacity: 1;
+    background: rgba(#fff,.4);
+  }
+}
