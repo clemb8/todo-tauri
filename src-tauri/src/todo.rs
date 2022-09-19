@@ -44,6 +44,4 @@ impl Todo {
         chosen
     }
 
-
-
 }
