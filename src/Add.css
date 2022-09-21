@@ -4,6 +4,7 @@ html {
   font-family: 'Montserrat', Arial, sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  height: 100%;
 }
 
 body {
@@ -39,7 +40,7 @@ textarea {
   position: relative;
 }
 
-form {
+.form {
   padding: 37.5px;
   margin: 50px 0;
 }
@@ -154,7 +155,7 @@ textarea {
   color: #474544;
 }
 
-#form_button {
+button {
   background: none;
   border: solid 2px #474544;
   color: #474544;
@@ -164,7 +165,7 @@ textarea {
   font-size: 0.875em;
   font-weight: bold;
   outline: none;
-  padding: 20px 35px;
+  padding: 10px 15px;
   text-transform: uppercase;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
@@ -173,7 +174,7 @@ textarea {
   transition: all 0.3s;
 }
 
-#form_button:hover {
+button:hover {
   background: #474544;
   color: #F2F3EB;
 }
