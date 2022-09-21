@@ -1,3 +1,5 @@
+use uuid::Uuid;
+
 use crate::json::{read_file_db, write_file_db};
 
 #[derive(Clone)]
@@ -25,6 +27,7 @@ impl Todos {
 #[serde(rename_all = "camelCase")]
 
 pub struct Todo {
+    pub id: Option<Uuid>,
     pub title: String,
     pub description: String,
     pub keywords: String,
