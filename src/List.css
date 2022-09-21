@@ -1,20 +1,23 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
-
   color: #0f0f0f;
-  background-color: #f6f6f6;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+html {
+  height: 100%;
+}
 
 body {
+  height: 100%;
   background-image: linear-gradient(-30deg, #E6F0FC, #BDE5D1);
 }
 
@@ -22,6 +25,7 @@ h1 {
   margin: 0;
   background: #fff;
   line-height: 1;
+  padding-top: 10px;
 }
 
 h2 {
@@ -54,16 +58,16 @@ h2::after {
   text-align: center;
 }
 
-input {
+.checkbox {
   position: absolute;
   left: -999px;
 }
 
-input:focus {
+.checkbox:focus {
   background: rgba(#fff, .4);
 }
 
-input:checked {
+.checkbox:checked {
   animation: 0.6s done;
   counter-increment: done-items;
 }
@@ -120,7 +124,6 @@ label:before {
   width: 500px;
   margin: 30px auto;
   border-top: solid 8px teal;
-  padding: 10px 20px;
 }
 
 .items {
@@ -135,6 +138,12 @@ label:before {
 
 .pending::after {
   content: counter(pending-items);
+}
+
+.button-add {
+  position: absolute;
+  top: 30px;
+  right: 30px;
 }
 
 .svg-inline--fa {
