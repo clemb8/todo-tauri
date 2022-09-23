@@ -44,6 +44,7 @@ function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
   }
 
   function handleClickEditItem(e: React.MouseEvent<SVGSVGElement>) {
+    console.log(e.currentTarget.id);
     todos.forEach((todo) => {
       if(todo.id === e.currentTarget.id) { 
         onEditItem(todo);
@@ -65,7 +66,7 @@ function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
                 <div className="item" key={todo.id}>
                   <FontAwesomeIcon icon={faCircleCheck} />
                   <label id={todo.id} className="done" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label>
-                  <FontAwesomeIcon icon={faPenNib} onClick={handleClickEditItem} />
+                  <FontAwesomeIcon className="iconEdit" id={todo.id} icon={faPenNib} onClick={handleClickEditItem} />
                 </div>
               )
             }
@@ -80,7 +81,7 @@ function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
                 <div className='item' key={todo.id}>
                   <FontAwesomeIcon icon={faCircle} />
                   <label id={todo.id} className="pending" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label>
-                  <FontAwesomeIcon icon={faPenNib} />
+                  <FontAwesomeIcon className="iconEdit" id={todo.id} icon={faPenNib} onClick={handleClickEditItem} />
                 </div>
               )
             }

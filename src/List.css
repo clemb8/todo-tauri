@@ -68,17 +68,8 @@ h2 {
   text-align: center;
 }
 
-.checkbox {
-  position: absolute;
-  left: -999px;
-}
-
-.checkbox:focus {
-  background: rgba(#fff, .4);
-}
-
 label {
-  animation: 00.6s pending;
+  width: 100%;
   display: block;
   position: relative;
   padding: 10px 0 10px 40px;
@@ -126,8 +117,16 @@ label:before {
   padding: 10px 0;
 }
 
+.iconEdit {
+  cursor: pointer;
+}
+
 .done {
   animation: 0.6s done;
+}
+
+.pending {
+  animation: 0.6s pending;
 }
 
 .button-add {

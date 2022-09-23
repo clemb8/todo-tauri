@@ -1,17 +1,25 @@
 import { Todo } from "./models/Todo";
 import "./Add.css";
 import { invoke } from "@tauri-apps/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface PropsList {
-  todos: Todo[],
+  todoInEdit: Todo | null,
   onBackToList: () => void
 }
 
-function Add({ todos, onBackToList }: PropsList) {
+function Add({ todoInEdit, onBackToList }: PropsList) {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [todo, setTodo] = useState<Todo | null>(todoInEdit);
+
+  useEffect(() => {
+    if(todoInEdit !== null) {
+      setTitle(todoInEdit.title);
+      setDescription(todoInEdit.description);
+    }
+  }, [todoInEdit]);
 
   function onChangeTitle(e: React.ChangeEvent<HTMLInputElement>) {
    setTitle(e.target.value);
@@ -22,8 +30,14 @@ function Add({ todos, onBackToList }: PropsList) {
   }
 
   async function addTask() {
-    let todo: Todo = { title, description, keywords: "", synced: false, done: false }
-    await invoke("write", { todoList: todos, currentTodo: todo });
+    let newTodo: Todo;
+    if(todoInEdit === null) {
+      newTodo = { title, description, keywords: "", synced: false, done: false };
+    } else {
+      newTodo = { id: todoInEdit.id, title, description, keywords: "", synced: todoInEdit.synced, done: todoInEdit.done };
+    }
+    await invoke("write", { currentTodo: newTodo });
+    onBackToList();
   }
 
   return (
@@ -40,7 +54,7 @@ function Add({ todos, onBackToList }: PropsList) {
       <div className="form">
         <div className="title">
           <label htmlFor="title"></label>
-          <input type="text" placeholder="Title" name="title" id="title_input" required onChange={onChangeTitle} />
+          <input type="text" placeholder="Title" name="title" id="title_input" required value={title} onChange={onChangeTitle} />
         </div>
         <div className="keywords">
           <label htmlFor="keywords"></label>
@@ -50,7 +64,7 @@ function Add({ todos, onBackToList }: PropsList) {
         }
         <div className="description">
           <label htmlFor="description"></label>
-          <textarea name="description" placeholder="Describe your task" id="description_input" onChange={onChangeDescription}></textarea>
+          <textarea name="description" placeholder="Describe your task" id="description_input" value={description} onChange={onChangeDescription}></textarea>
         </div>
         <button className="submit" onClick={addTask}>Add</button>
         <button className="submit" onClick={onBackToList}>Cancel</button>
