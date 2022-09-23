@@ -1,5 +1,6 @@
 import { Todo } from "./models/Todo";
 import "./List.css";
+import { invoke } from "@tauri-apps/api";
 
 interface PropsList {
   todos: Todo[],
@@ -10,8 +11,15 @@ interface PropsList {
 function List({ todos, onAdd, onClickItem }: PropsList) {
 
   function handleClickItem(e: React.MouseEvent<HTMLLabelElement>) {
-    console.log(e.currentTarget.id);
-    todos.forEach((todo) => todo.id === e.currentTarget.id ? todo.done = !todo.done : todo.done = todo.done);
+    let todoUpdated;
+    todos.forEach((todo) => {
+      if(todo.id === e.currentTarget.id) {
+        todo.done ? todo.done = false : todo.done = true;
+      }
+      todoUpdated = todo;
+    });
+    invoke("write", { todoList: todos, currentTodo: todoUpdated });
+    console.log(todos);
     onClickItem(todos);
   }
 
@@ -26,7 +34,7 @@ function List({ todos, onAdd, onClickItem }: PropsList) {
           todos.map((todo) => {
             if(todo.done) {
               return(
-                <><input className="checkbox" id={todo.id} type="checkbox" checked /><label id={todo.id} className="done" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label></>
+                <div key={todo.id}><input className="checkbox" id={todo.id} type="checkbox" checked /><label id={todo.id} className="done" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label></div>
               )
             }
           }) 
@@ -37,7 +45,7 @@ function List({ todos, onAdd, onClickItem }: PropsList) {
           todos.map((todo) => {
             if(!todo.done) {
               return(
-                <><input className="checkbox" id={todo.id} type="checkbox" /><label id={todo.id} className="pending" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label></>
+                <div key={todo.id}><input className="checkbox" id={todo.id} type="checkbox" /><label id={todo.id} className="pending" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label></div>
               )
             }
           }) 
