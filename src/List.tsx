@@ -1,26 +1,54 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Todo } from "./models/Todo";
 import "./List.css";
 import { invoke } from "@tauri-apps/api";
+import { faCircle, faCircleCheck, faPenNib } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from "react";
 
 interface PropsList {
   todos: Todo[],
   onAdd: () => void,
   onClickItem: (todos : Todo[]) => void
+  onEditItem: (todo : Todo) => void
 }
 
-function List({ todos, onAdd, onClickItem }: PropsList) {
+function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
+
+  const [countDone, setCountDone] = useState(0);
+  const [countPending, setCountPending] = useState(0);
+
+  useEffect(() => {
+    setCountDone(todos.filter((todo) => todo.done).length);
+    setCountPending(todos.filter((todo) => !todo.done).length);
+  }, [todos]);
 
   function handleClickItem(e: React.MouseEvent<HTMLLabelElement>) {
     let todoUpdated;
     todos.forEach((todo) => {
       if(todo.id === e.currentTarget.id) {
-        todo.done ? todo.done = false : todo.done = true;
+        if(todo.done) {
+          todo.done = false;
+          setCountDone(countDone - 1);
+          setCountPending(countPending + 1);
+        } else {
+          todo.done = true;
+          setCountDone(countDone + 1);
+          setCountPending(countPending - 1);
+        }
+        todoUpdated = todo;
       }
-      todoUpdated = todo;
     });
-    invoke("write", { todoList: todos, currentTodo: todoUpdated });
+    invoke("write", { currentTodo: todoUpdated });
     console.log(todos);
     onClickItem(todos);
+  }
+
+  function handleClickEditItem(e: React.MouseEvent<SVGSVGElement>) {
+    todos.forEach((todo) => {
+      if(todo.id === e.currentTarget.id) { 
+        onEditItem(todo);
+      }
+    });
   }
 
   return(
@@ -29,23 +57,31 @@ function List({ todos, onAdd, onClickItem }: PropsList) {
       <button className="button-add" onClick={onAdd}>Add a To-Do</button>
       <div className="items">
 
-        <h2 className="done">Done</h2>
+        <div className="header"><span className="border"></span><h2 className="done">Done</h2><span className="count">{countDone}</span></div>
         {
           todos.map((todo) => {
             if(todo.done) {
               return(
-                <div key={todo.id}><input className="checkbox" id={todo.id} type="checkbox" checked /><label id={todo.id} className="done" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label></div>
+                <div className="item" key={todo.id}>
+                  <FontAwesomeIcon icon={faCircleCheck} />
+                  <label id={todo.id} className="done" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label>
+                  <FontAwesomeIcon icon={faPenNib} onClick={handleClickEditItem} />
+                </div>
               )
             }
           }) 
         }
 
-        <h2 className="pending">Pending</h2>
+        <div className="header"><span className="border"></span><h2 className="pending">Pending</h2><span className="count">{countPending}</span></div>
         {
           todos.map((todo) => {
             if(!todo.done) {
               return(
-                <div key={todo.id}><input className="checkbox" id={todo.id} type="checkbox" /><label id={todo.id} className="pending" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label></div>
+                <div className='item' key={todo.id}>
+                  <FontAwesomeIcon icon={faCircle} />
+                  <label id={todo.id} className="pending" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label>
+                  <FontAwesomeIcon icon={faPenNib} />
+                </div>
               )
             }
           }) 

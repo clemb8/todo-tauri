@@ -26,6 +26,7 @@ h1 {
   background: #fff;
   line-height: 1;
   padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 h2 {
@@ -36,18 +37,27 @@ h2 {
   position: relative;
 }
 
-h2::before {
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.border {
   content: '';
   display: block;
-  position: absolute;
+  position: relative;
   left: -20px;
   top: 15%;
-  width: 1px;
-  height: 70%;
+  width: 10px;
+  margin-right: 50px;
   border-left: solid 4px teal;
 }
 
-h2::after {
+.count {
+  position: relative;
+  right: -20px;
+  top: 15%;
   border-radius: 6px;
   display: block;
   float: right;
@@ -67,11 +77,6 @@ h2::after {
   background: rgba(#fff, .4);
 }
 
-.checkbox:checked {
-  animation: 0.6s done;
-  counter-increment: done-items;
-}
-
 label {
   animation: 00.6s pending;
   display: block;
@@ -79,29 +84,10 @@ label {
   padding: 10px 0 10px 40px;
   border-top: dashed 1px #fff;
   cursor: pointer;
-  counter-increment: pending-items;
 }
 
 label:hover {
   background: rgba(#fff, .4);
-}
-
-.done::before {
-  display: none !important;
-  font: var(--fa-font-solid);
-  display: inline-block;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  content: "\f14a";
-}
-
-.pending::before {
-  display: none !important;
-  font: var(--fa-font-solid);
-  display: inline-block;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  content: "\f0c8";
 }
 
 label:before {
@@ -132,24 +118,22 @@ label:before {
   padding: 20px;
 }
 
-.done::after {
-  content: counter(done-items);
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
 }
 
-.pending::after {
-  content: counter(pending-items);
+.done {
+  animation: 0.6s done;
 }
 
 .button-add {
   position: absolute;
   top: 30px;
   right: 30px;
-}
-
-.svg-inline--fa {
-  position: absolute;
-  left: 10px;
-  top: 15px;
 }
 
 @keyframes done {
