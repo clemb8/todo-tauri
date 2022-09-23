@@ -33,18 +33,6 @@ textarea {
   overflow: auto;
 }
 
-#container {
-  border: solid 3px #474544;
-  max-width: 768px;
-  margin: 60px auto;
-  position: relative;
-}
-
-.form {
-  padding: 37.5px;
-  margin: 50px 0;
-}
-
 h1 {
   color: #474544;
   font-size: 32px;
@@ -54,23 +42,9 @@ h1 {
   text-transform: uppercase;
 }
 
-.underline {
-  border-bottom: solid 2px #474544;
-  margin: -0.512em auto;
-  width: 80px;
-}
-
 .icon_wrapper {
   margin: 50px auto 0;
   width: 100%;
-}
-
-.icon {
-  display: block;
-  fill: #474544;
-  height: 50px;
-  margin: 0 auto;
-  width: 50px;
 }
 
 input[type='text'], select, textarea {
@@ -102,6 +76,18 @@ input[type='text']:focus, textarea:focus {
   padding: 0 0 0.875em 0;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 37.5px;
+  margin: 50px 0;
+}
+
+.formUnit {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .description {
   float: none;
 }
@@ -111,23 +97,31 @@ input[type='text']:focus, textarea:focus {
   width: 45%;
 }
 
-select {
-  background: url('https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-arrow-down-32.png') no-repeat right;
-  outline: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
+.keywords {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
-select::-ms-expand {
-  display: none;
+.keywords input {
+  width: 80%;
+  margin-right: 10px;
 }
 
-.subject {
-  width: 100%;
+.tag {
+  background: #6F6F6F;
+  color: white;
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+  padding: 0 20px 0 20px;
+  position: relative;
+  margin: 0 10px 10px 0;
+  text-decoration: none;
 }
 
-.telephone {
-  width: 100%;
+.tag:hover {
+  background-color: #9C9C9C;
 }
 
 textarea {
@@ -179,39 +173,15 @@ button:hover {
   color: #F2F3EB;
 }
 
-@media screen and (max-width: 768px) {
-  #container {
-    margin: 20px auto;
-    width: 95%;
-  }
-}
-
 @media screen and (max-width: 480px) {
   h1 {
     font-size: 26px;
-  }
-  
-  .underline {
-    width: 68px;
-  }
-  
-  #form_button {
-    padding: 15px 25px;
   }
 }
 
 @media screen and (max-width: 420px) {
   h1 {
     font-size: 18px;
-  }
-  
-  .icon {
-    height: 35px;
-    width: 35px;
-  }
-  
-  .underline {
-    width: 53px;
   }
   
   input[type='text'], select, textarea {

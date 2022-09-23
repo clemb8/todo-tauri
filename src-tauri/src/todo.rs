@@ -30,7 +30,7 @@ pub struct Todo {
     pub id: Option<Uuid>,
     pub title: String,
     pub description: String,
-    pub keywords: String,
+    pub keywords: Vec<String>,
     pub synced: bool,
     pub done: bool,
 }

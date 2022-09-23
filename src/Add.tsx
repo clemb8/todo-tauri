@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faFileCirclePlus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { Todo } from "./models/Todo";
 import "./Add.css";
 import { invoke } from "@tauri-apps/api";
@@ -14,12 +14,14 @@ function Add({ todoInEdit, onBackToList }: PropsList) {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [todo, setTodo] = useState<Todo | null>(todoInEdit);
+  const [keyword, setKeyword] = useState("");
+  const [keywords, setKeywords] = useState<string[]>([]);
 
   useEffect(() => {
     if(todoInEdit !== null) {
       setTitle(todoInEdit.title);
       setDescription(todoInEdit.description);
+      setKeywords(todoInEdit.keywords);
     }
   }, [todoInEdit]);
 
@@ -31,12 +33,21 @@ function Add({ todoInEdit, onBackToList }: PropsList) {
    setDescription(e.target.value);
   }
 
+  function onChangeKeyword(e: React.ChangeEvent<HTMLInputElement>) {
+    setKeyword(e.target.value);
+  }
+
+  function handleAddKeyword() {
+    setKeywords([...keywords, keyword]);
+    setKeyword("");
+  }
+
   async function addTask() {
     let newTodo: Todo;
     if(todoInEdit === null) {
-      newTodo = { title, description, keywords: "", synced: false, done: false };
+      newTodo = { title, description, keywords, synced: false, done: false };
     } else {
-      newTodo = { id: todoInEdit.id, title, description, keywords: "", synced: todoInEdit.synced, done: todoInEdit.done };
+      newTodo = { id: todoInEdit.id, title, description, keywords, synced: todoInEdit.synced, done: todoInEdit.done };
     }
     await invoke("write", { currentTodo: newTodo });
     onBackToList();
@@ -49,18 +60,17 @@ function Add({ todoInEdit, onBackToList }: PropsList) {
         <FontAwesomeIcon icon={faFileCirclePlus} size="3x" />
       </div>
       <div className="form">
-        <div className="title">
-          <label htmlFor="title"></label>
+        <div className="formUnit title">
           <input type="text" placeholder="Title" name="title" id="title_input" required value={title} onChange={onChangeTitle} />
         </div>
-        <div className="keywords">
-          <label htmlFor="keywords"></label>
-          <input type="text" placeholder="" name="keywords" id="title_input" />
+        <div className="formUnit keywords">
+          <input type="text" placeholder="Add keywords" name="keyword" value={keyword} onChange={onChangeKeyword} id="title_input" />
+          {keyword !== "" ? <FontAwesomeIcon className="ddKeyword" icon={faCirclePlus} size="2x" onClick={handleAddKeyword} /> : <></>}
+          <div>
+            {keywords.map((keyword) => {return(<li className="tag">{keyword}</li>)})}
+          </div>
         </div>
-        {//TODO Add keywords handling
-        }
-        <div className="description">
-          <label htmlFor="description"></label>
+        <div className="formUnit description">
           <textarea name="description" placeholder="Describe your task" id="description_input" value={description} onChange={onChangeDescription}></textarea>
         </div>
         <button className="submit" onClick={addTask}>Add</button>
