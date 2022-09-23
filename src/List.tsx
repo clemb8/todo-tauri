@@ -1,4 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Todo } from "./models/Todo";
 import "./List.css";
 import { invoke } from "@tauri-apps/api";
@@ -64,7 +64,7 @@ function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
             if(todo.done) {
               return(
                 <div className="item" key={todo.id}>
-                  <FontAwesomeIcon icon={faCircleCheck} />
+                  <FontAwesomeIcon icon={faCircleCheck} size="xl" />
                   <label id={todo.id} className="done" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label>
                   <FontAwesomeIcon className="iconEdit" id={todo.id} icon={faPenNib} onClick={handleClickEditItem} />
                 </div>
@@ -79,7 +79,7 @@ function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
             if(!todo.done) {
               return(
                 <div className='item' key={todo.id}>
-                  <FontAwesomeIcon icon={faCircle} />
+                  <FontAwesomeIcon icon={faCircle} size="xl" />
                   <label id={todo.id} className="pending" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label>
                   <FontAwesomeIcon className="iconEdit" id={todo.id} icon={faPenNib} onClick={handleClickEditItem} />
                 </div>
