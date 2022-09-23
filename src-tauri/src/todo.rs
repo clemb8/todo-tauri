@@ -18,7 +18,7 @@ impl Todos {
     }
 
     pub fn write(self) {
-        write_file_db(&self);
+        write_file_db(&self).ok();
     }
 }
 
@@ -36,15 +36,17 @@ pub struct Todo {
 }
 
 impl Todo {
-
-    fn get(todos: Vec<Self>, title: &str) -> Self {
-
-        let chosen = todos
-            .into_iter() // changed from iter() to into_iter() here
-            .find(|todo| todo.title == title)
-            .expect("didnt match any todo");
-
-        chosen
+    pub fn save(mut self) {
+        let mut todos: Vec<Todo> = Todos::init();
+        if self.id == None {
+            self.id = Some(Uuid::new_v4());
+            todos.push(self);
+        } else {
+            let new_list = todos.iter().clone()
+                .map(|t| if t.id == self.id { self.clone() } else { t.clone() })
+                .collect::<Vec<Todo>>();
+            todos = new_list;
+        }
+        Todos::new(todos).write();
     }
-
 }
