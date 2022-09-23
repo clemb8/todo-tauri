@@ -1,8 +1,17 @@
 {
   "todos": [
     {
+      "id": null,
       "title": "test",
       "description": "",
+      "keywords": "",
+      "synced": false,
+      "done": false
+    },
+    {
+      "id": "9ef348bc-c697-48fe-b23f-c48a68685408",
+      "title": "Test",
+      "description": "Test",
       "keywords": "",
       "synced": false,
       "done": false

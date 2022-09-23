@@ -20,12 +20,13 @@ function App() {
 
   function handleToAdd() { setState(states.add); }
   function handleBackToList() { setState(states.list) }
+  function handleActionItem(todos: Todo[]) { setTodos(todos) }
 
   useEffect(() => { init().then((initTodos) => setTodos(initTodos)) }, [init]);
 
   return (
     <div className="container">
-      { state === states.list ? <List todos={todos} onAdd={handleToAdd}></List> : <Add todos={todos} onBackToList={handleBackToList}></Add> }
+      { state === states.list ? <List todos={todos} onAdd={handleToAdd} onClickItem={handleActionItem}></List> : <Add todos={todos} onBackToList={handleBackToList}></Add> }
     </div>
   );
 }
