@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCirclePlus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faFileCirclePlus, faCirclePlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { Todo } from "./models/Todo";
 import "./Add.css";
 import { invoke } from "@tauri-apps/api";
 import { useEffect, useState } from "react";
+import KeywordsInput from './components/KeywordsInput';
 
 interface PropsList {
   todoInEdit: Todo | null,
@@ -14,7 +15,6 @@ function Add({ todoInEdit, onBackToList }: PropsList) {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [keyword, setKeyword] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
 
   useEffect(() => {
@@ -33,13 +33,8 @@ function Add({ todoInEdit, onBackToList }: PropsList) {
    setDescription(e.target.value);
   }
 
-  function onChangeKeyword(e: React.ChangeEvent<HTMLInputElement>) {
-    setKeyword(e.target.value);
-  }
-
-  function handleAddKeyword() {
-    setKeywords([...keywords, keyword]);
-    setKeyword("");
+  function handleChangeKeywords(keywords: string[]) {
+    setKeywords(keywords);
   }
 
   async function addTask() {
@@ -64,11 +59,7 @@ function Add({ todoInEdit, onBackToList }: PropsList) {
           <input type="text" placeholder="Title" name="title" id="title_input" required value={title} onChange={onChangeTitle} />
         </div>
         <div className="formUnit keywords">
-          <input type="text" placeholder="Add keywords" name="keyword" value={keyword} onChange={onChangeKeyword} id="title_input" />
-          {keyword !== "" ? <FontAwesomeIcon className="ddKeyword" icon={faCirclePlus} size="2x" onClick={handleAddKeyword} /> : <></>}
-          <div>
-            {keywords.map((keyword) => {return(<li className="tag">{keyword}</li>)})}
-          </div>
+          <KeywordsInput keywords={keywords} onChangeKeywords={handleChangeKeywords}></KeywordsInput>
         </div>
         <div className="formUnit description">
           <textarea name="description" placeholder="Describe your task" id="description_input" value={description} onChange={onChangeDescription}></textarea>

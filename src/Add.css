@@ -108,14 +108,36 @@ input[type='text']:focus, textarea:focus {
   margin-right: 10px;
 }
 
+.keywordsList {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.keywordLabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.keywordDelete {
+  position: relative;
+  top: 20%;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
 .tag {
   background: #6F6F6F;
   color: white;
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   height: 24px;
   line-height: 24px;
   padding: 0 20px 0 20px;
-  position: relative;
   margin: 0 10px 10px 0;
   text-decoration: none;
 }

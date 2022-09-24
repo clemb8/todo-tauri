@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Todo } from "./models/Todo";
+import { isDone, Todo, todoDone, todoUnDone } from "./models/Todo";
 import "./List.css";
 import { invoke } from "@tauri-apps/api";
 import { faCircle, faCircleCheck, faPenNib } from '@fortawesome/free-solid-svg-icons';
@@ -22,29 +22,29 @@ function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
     setCountPending(todos.filter((todo) => !todo.done).length);
   }, [todos]);
 
+  function count(newDone: boolean) {
+    if (newDone) {
+      setCountDone(countDone + 1);
+      setCountPending(countPending - 1);
+    } else {
+      setCountDone(countDone - 1);
+      setCountPending(countPending + 1);
+    }
+  }
+
   function handleClickItem(e: React.MouseEvent<HTMLLabelElement>) {
     let todoUpdated;
     todos.forEach((todo) => {
       if(todo.id === e.currentTarget.id) {
-        if(todo.done) {
-          todo.done = false;
-          setCountDone(countDone - 1);
-          setCountPending(countPending + 1);
-        } else {
-          todo.done = true;
-          setCountDone(countDone + 1);
-          setCountPending(countPending - 1);
-        }
+        isDone(todo) ? todoUnDone(todo, count(false)) : todoDone(todo, count(true));
         todoUpdated = todo;
       }
     });
     invoke("write", { currentTodo: todoUpdated });
-    console.log(todos);
     onClickItem(todos);
   }
 
   function handleClickEditItem(e: React.MouseEvent<SVGSVGElement>) {
-    console.log(e.currentTarget.id);
     todos.forEach((todo) => {
       if(todo.id === e.currentTarget.id) { 
         onEditItem(todo);
