@@ -117,7 +117,18 @@ label:before {
   padding: 10px 0;
 }
 
-.iconEdit {
+.icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 0 5px;
   cursor: pointer;
 }
 

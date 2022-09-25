@@ -48,7 +48,13 @@ function App() {
 
   return (
     <div className="container">
-      { state === states.list ? <List todos={todos} onAdd={handleToAdd} onClickItem={handleActionItem} onEditItem={handleEditItem}></List> : <></> }
+      { state === states.list ? <List todos={todos} 
+                                    onAdd={handleToAdd} 
+                                    onClickItem={handleActionItem} 
+                                    onEditItem={handleEditItem} 
+                                    onDeleteItem={handleActionItem}></List> 
+                                : <></> 
+      }
       { state === states.add ? <Add todoInEdit={null} onBackToList={handleBackToList} onUpdateList={handleUpdateList}></Add> : <></> }
       { state === states.edit ? <Add todoInEdit={todoInEdit} onBackToList={handleBackToList} onUpdateList={handleUpdateList}></Add> : <></> }
     </div>

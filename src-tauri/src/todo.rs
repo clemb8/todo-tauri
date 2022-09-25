@@ -80,6 +80,15 @@ impl Todo {
         Todos::new(todos).write();
     }
 
+    pub fn delete(self) {
+        let todos: Vec<Todo> = Todos::init();
+        let new_list = todos.iter().clone()
+            .filter(|t| t.id != self.id)
+            .map(|t| t.clone())
+            .collect::<Vec<Todo>>();
+        Todos::new(new_list).write();
+    }
+
     pub fn is_done(&self) -> bool {
         self.status == StatusTodo::Done
     }

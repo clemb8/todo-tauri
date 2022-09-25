@@ -24,12 +24,17 @@ fn write(current_todo: Todo) {
     current_todo.save();
 }
 
+#[tauri::command]
+fn delete(current_todo: Todo) {
+    current_todo.delete();
+}
+
 fn main() {
     
     schedule_check_todo_to_archive();
 
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![init, write])
+        .invoke_handler(tauri::generate_handler![init, write, delete])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

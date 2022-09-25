@@ -2,18 +2,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isDone, Todo, todoDone, todoUnDone } from "./models/Todo";
 import "./List.css";
 import { invoke } from "@tauri-apps/api";
-import { faCircle, faCircleCheck, faPenNib } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faCircleCheck, faPenNib, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from "react";
 import { StatusTodo } from './models/StatusTodo';
 
 interface PropsList {
   todos: Todo[],
   onAdd: () => void,
-  onClickItem: (todos : Todo[]) => void
-  onEditItem: (todo : Todo) => void
+  onClickItem: (todos : Todo[]) => void,
+  onEditItem: (todo : Todo) => void,
+  onDeleteItem: (todos : Todo[]) => void,
 }
 
-function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
+function List({ todos, onAdd, onClickItem, onEditItem, onDeleteItem }: PropsList) {
 
   const [countDone, setCountDone] = useState(0);
   const [countPending, setCountPending] = useState(0);
@@ -53,26 +54,17 @@ function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
     });
   }
 
+  function handleClickDeleteItem(e: React.MouseEvent<SVGSVGElement>) {
+    let newTodos = todos.filter((todo) => todo.id !== e.currentTarget.id);
+    invoke("delete", { currentTodo: newTodos });
+    onDeleteItem(newTodos);
+  }
+
   return(
     <div className="todoList">
       <h1>My To-Do List</h1>
       <button className="button-add" onClick={onAdd}>Add a To-Do</button>
       <div className="items">
-
-        <div className="header"><span className="border"></span><h2 className="done">Done</h2><span className="count">{countDone}</span></div>
-        {
-          todos.map((todo) => {
-            if(todo.status === StatusTodo.Done) {
-              return(
-                <div className="item" key={todo.id}>
-                  <FontAwesomeIcon icon={faCircleCheck} size="xl" />
-                  <label id={todo.id} className="done" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label>
-                  <FontAwesomeIcon className="iconEdit" id={todo.id} icon={faPenNib} onClick={handleClickEditItem} />
-                </div>
-              )
-            }
-          }) 
-        }
 
         <div className="header"><span className="border"></span><h2 className="pending">Pending</h2><span className="count">{countPending}</span></div>
         {
@@ -82,7 +74,28 @@ function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
                 <div className='item' key={todo.id}>
                   <FontAwesomeIcon icon={faCircle} size="xl" />
                   <label id={todo.id} className="pending" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label>
-                  <FontAwesomeIcon className="iconEdit" id={todo.id} icon={faPenNib} onClick={handleClickEditItem} />
+                  <div className='icons'>
+                    <FontAwesomeIcon className="icon iconEdit" id={todo.id} icon={faPenNib} onClick={handleClickEditItem} />
+                    <FontAwesomeIcon className="icon iconDelete" id={todo.id} icon={faTrash} onClick={handleClickDeleteItem} />
+                  </div>
+                </div>
+              )
+            }
+          }) 
+        }
+
+        <div className="header"><span className="border"></span><h2 className="done">Done</h2><span className="count">{countDone}</span></div>
+        {
+          todos.map((todo) => {
+            if(todo.status === StatusTodo.Done) {
+              return(
+                <div className="item" key={todo.id}>
+                  <FontAwesomeIcon icon={faCircleCheck} size="xl" />
+                  <label id={todo.id} className="done" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label>
+                  <div className='icons'>
+                    <FontAwesomeIcon className="icon iconEdit" id={todo.id} icon={faPenNib} onClick={handleClickEditItem} />
+                    <FontAwesomeIcon className="icon iconDelete" id={todo.id} icon={faTrash} onClick={handleClickDeleteItem} />
+                  </div>
                 </div>
               )
             }
