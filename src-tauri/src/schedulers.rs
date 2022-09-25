@@ -6,7 +6,7 @@ use crate::todo::Todos;
 pub fn schedule_check_todo_to_archive() {
     let mut job = CronJob::new("Archiving", job_scheduled);
     job.seconds("0");
-    job.minutes("40");
+    job.minutes("0");
     job.offset(0);
     CronJob::start_job_threaded(job);
 }

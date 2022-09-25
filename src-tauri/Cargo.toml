@@ -20,6 +20,7 @@ tauri = { version = "1.0.0", features = ["api-all"] }
 uuid = { version = "0.7", features = ["v4", "serde"] }
 chrono = "0.4.9"
 cronjob = "0.4.17"
+serde_repr = "0.1.9"
 
 [features]
 # by default Tauri runs in production mode

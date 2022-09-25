@@ -5,6 +5,7 @@ import "./Add.css";
 import { invoke } from "@tauri-apps/api";
 import { useEffect, useState } from "react";
 import KeywordsInput from './components/KeywordsInput';
+import { StatusTodo } from './models/StatusTodo';
 
 interface PropsList {
   todoInEdit: Todo | null,
@@ -40,9 +41,9 @@ function Add({ todoInEdit, onBackToList }: PropsList) {
   async function addTask() {
     let newTodo: Todo;
     if(todoInEdit === null) {
-      newTodo = { title, description, keywords, synced: false, done: false };
+      newTodo = { title, description, keywords, synced: false, status: StatusTodo.Todo };
     } else {
-      newTodo = { id: todoInEdit.id, title, description, keywords, synced: todoInEdit.synced, done: todoInEdit.done };
+      newTodo = { id: todoInEdit.id, title, description, keywords, synced: todoInEdit.synced, status: todoInEdit.status, doneAt: todoInEdit.doneAt };
     }
     await invoke("write", { currentTodo: newTodo });
     onBackToList();

@@ -1,5 +1,5 @@
 use uuid::Uuid;
-
+use crate::status_todo::StatusTodo;
 use crate::json::{read_file_db, write_file_db};
 use crate::utils::compare_date_today;
 
@@ -11,10 +11,13 @@ pub struct Todos {
 
 impl Todos {
     pub fn init() -> Vec<Todo> {
-        let retry = 0;
+        println!("init");
+        let mut retry = 0;
         let todos = match read_file_db::<Todos>() {
             Ok(todos) => todos.todos,
-            Err(_) => {
+            Err(error) => {
+                println!("Error in init : {:?}", error);
+                retry += 1;
                 if retry < 3 {
                     Todos::init()
                 } else {
@@ -22,7 +25,6 @@ impl Todos {
                 }
             }
         };
-
         todos
     }
 
@@ -40,7 +42,7 @@ impl Todos {
         for todo in self.todos.iter_mut() {
             if todo.is_to_archive() {
                 to_updated = true;
-                todo.is_archived = true;
+                todo.status = StatusTodo::Archived;
                 updated_todos.push(todo.clone());
             }
         }
@@ -59,9 +61,8 @@ pub struct Todo {
     pub description: String,
     pub keywords: Vec<String>,
     pub synced: bool,
-    pub done: bool,
+    pub status: StatusTodo,
     pub done_at: Option<String>,
-    pub is_archived: bool,
 }
 
 impl Todo {
@@ -80,11 +81,11 @@ impl Todo {
     }
 
     pub fn is_done(&self) -> bool {
-        self.done
+        self.status == StatusTodo::Done
     }
 
     pub fn is_to_archive(&self) -> bool {
-        if self.is_done() && !self.is_archived {
+        if self.status == StatusTodo::Done {
             let days = compare_date_today(&self.done_at.as_ref().unwrap());
             println!("days: {}", days);
             days == 0

@@ -4,6 +4,7 @@ import "./List.css";
 import { invoke } from "@tauri-apps/api";
 import { faCircle, faCircleCheck, faPenNib } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from "react";
+import { StatusTodo } from './models/StatusTodo';
 
 interface PropsList {
   todos: Todo[],
@@ -18,8 +19,8 @@ function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
   const [countPending, setCountPending] = useState(0);
 
   useEffect(() => {
-    setCountDone(todos.filter((todo) => todo.done).length);
-    setCountPending(todos.filter((todo) => !todo.done).length);
+    setCountDone(todos.filter((todo) => todo.status === StatusTodo.Done).length);
+    setCountPending(todos.filter((todo) => todo.status === StatusTodo.Todo).length);
   }, [todos]);
 
   function count(newDone: boolean) {
@@ -61,7 +62,7 @@ function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
         <div className="header"><span className="border"></span><h2 className="done">Done</h2><span className="count">{countDone}</span></div>
         {
           todos.map((todo) => {
-            if(todo.done) {
+            if(todo.status === StatusTodo.Done) {
               return(
                 <div className="item" key={todo.id}>
                   <FontAwesomeIcon icon={faCircleCheck} size="xl" />
@@ -76,7 +77,7 @@ function List({ todos, onAdd, onClickItem, onEditItem }: PropsList) {
         <div className="header"><span className="border"></span><h2 className="pending">Pending</h2><span className="count">{countPending}</span></div>
         {
           todos.map((todo) => {
-            if(!todo.done) {
+            if(todo.status === StatusTodo.Todo) {
               return(
                 <div className='item' key={todo.id}>
                   <FontAwesomeIcon icon={faCircle} size="xl" />

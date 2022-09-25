@@ -1,24 +1,25 @@
+import { StatusTodo } from "./StatusTodo";
+
 export interface Todo {
   id?: string,
   title: string,
   description: string,
   keywords: string[],
   synced: boolean,
-  done: boolean,
+  status: StatusTodo,
   doneAt?: Date,
-  isArchived: boolean,
 }
 
 export function isDone(todo: Todo): boolean {
-  return todo.done;
+  return todo.status === StatusTodo.Done;
 }
 
 export function todoDone(todo: Todo, count: void) {
-  todo.done = true;
+  todo.status = StatusTodo.Done;
   todo.doneAt = new Date();
 }
 
 export function todoUnDone(todo: Todo, count: void) {
-  todo.done = false;
+  todo.status = StatusTodo.Todo;
   todo.doneAt = undefined;
 }

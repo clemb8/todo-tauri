@@ -17,7 +17,13 @@ function App() {
   const [todoInEdit, setTodoInEdit] = useState({} as Todo);
 
   async function init(): Promise<Todo[]> {
-    return await invoke("init");
+    try {
+      const todos: Todo[] = await invoke("init");
+      return todos;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
   }
 
   function handleToAdd() { setState(states.add) }
@@ -25,7 +31,7 @@ function App() {
   function handleActionItem(todos: Todo[]) { setTodos(todos) }
   function handleEditItem(todo: Todo) { setTodoInEdit(todo); setState(states.edit) }
 
-  useEffect(() => { init().then((initTodos) => setTodos(initTodos)) }, [init]);
+  useEffect(() => { init().then((initTodos) => setTodos(initTodos)).catch((error) => console.log(error)) }, []);
 
   return (
     <div className="container">

@@ -3188,6 +3188,7 @@ dependencies = [
  "cronjob",
  "serde",
  "serde_json",
+ "serde_repr",
  "tauri",
  "tauri-build",
  "uuid 0.7.4",

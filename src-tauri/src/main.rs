@@ -6,6 +6,7 @@ pub mod json;
 pub mod todo;
 pub mod utils;
 pub mod schedulers;
+pub mod status_todo;
 
 use schedulers::schedule_check_todo_to_archive;
 use todo::Todo;
