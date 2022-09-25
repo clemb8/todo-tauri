@@ -10,7 +10,7 @@ interface PropsItems {
     onClickItem: (todos : Todo[]) => void,
     onEditItem: (todo : Todo) => void,
     onDeleteItem: (todos : Todo[]) => void,
-    updateCount: (increment : StatusTodo, decrement: StatusTodo) => void
+    updateCount: () => void
 }
 
 function Items({ todos, status, onClickItem, onEditItem, onDeleteItem, updateCount }: PropsItems) {
@@ -22,7 +22,7 @@ function Items({ todos, status, onClickItem, onEditItem, onDeleteItem, updateCou
                 isDone(todo) ? todoUnDone(todo) : todoDone(todo);
                 invoke("write", { currentTodo: todo });
                 onClickItem(todos);
-                updateCount(status, todo.status);
+                updateCount();
             }
         });
     }
@@ -32,6 +32,17 @@ function Items({ todos, status, onClickItem, onEditItem, onDeleteItem, updateCou
         if(todo.id === e.currentTarget.id) { 
             onEditItem(todo);
         }
+        });
+    }
+
+    function handleClickArchiveItem(e: React.MouseEvent<SVGSVGElement>) {
+        todos.forEach((todo) => {
+            if(todo.id === e.currentTarget.id) {
+                todo.status = StatusTodo.Archived;
+                invoke("write", { currentTodo: todo });
+                onClickItem(todos);
+                updateCount();
+            }
         });
     }
 
@@ -54,8 +65,9 @@ function Items({ todos, status, onClickItem, onEditItem, onDeleteItem, updateCou
                     {status === StatusTodo.Archived ? <FontAwesomeIcon icon={faCircleCheck} size="lg" /> : <></>}
                     <label id={todo.id} className="pending" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label>
                     <div className='icons'>
-                      <FontAwesomeIcon className="icon iconEdit" id={todo.id} icon={faPenNib} onClick={handleClickEditItem} />
-                      <FontAwesomeIcon className="icon iconDelete" id={todo.id} icon={faTrash} onClick={handleClickDeleteItem} />
+                      <FontAwesomeIcon className="icon iconEdit" id={todo.id} icon={faPenNib} onClick={handleClickEditItem} size="xs" />
+                      {status !== StatusTodo.Archived ? <FontAwesomeIcon className="icon iconArchive" id={todo.id} icon={faBoxArchive} onClick={handleClickArchiveItem} size="xs" /> : <></>} 
+                      <FontAwesomeIcon className="icon iconDelete" id={todo.id} icon={faTrash} onClick={handleClickDeleteItem} size="xs" />
                     </div>
                   </div>
                 )
