@@ -4,7 +4,10 @@
 )]
 pub mod json;
 pub mod todo;
+pub mod utils;
+pub mod schedulers;
 
+use schedulers::schedule_check_todo_to_archive;
 use todo::Todo;
 use todo::Todos;
 
@@ -21,6 +24,8 @@ fn write(current_todo: Todo) {
 }
 
 fn main() {
+    
+    schedule_check_todo_to_archive();
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![init, write])

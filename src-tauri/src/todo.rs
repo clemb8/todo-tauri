@@ -1,6 +1,7 @@
 use uuid::Uuid;
 
 use crate::json::{read_file_db, write_file_db};
+use crate::utils::compare_date_today;
 
 #[derive(Clone)]
 #[derive(serde::Serialize, serde::Deserialize, Debug)]
@@ -10,15 +11,41 @@ pub struct Todos {
 
 impl Todos {
     pub fn init() -> Vec<Todo> {
-        read_file_db::<Todos>().unwrap().todos
+        let retry = 0;
+        let todos = match read_file_db::<Todos>() {
+            Ok(todos) => todos.todos,
+            Err(_) => {
+                if retry < 3 {
+                    Todos::init()
+                } else {
+                    vec![]
+                }
+            }
+        };
+
+        todos
     }
 
     pub fn new(todos: Vec<Todo>) -> Todos {
         Todos { todos: todos }
     }
 
-    pub fn write(self) {
+    pub fn write(&self) {
         write_file_db(&self).ok();
+    }
+
+    pub fn check_todo_to_archive(&mut self) {
+        let mut to_updated = false;
+        let mut updated_todos = Vec::new();
+        for todo in self.todos.iter_mut() {
+            if todo.is_to_archive() {
+                to_updated = true;
+                todo.is_archived = true;
+                updated_todos.push(todo.clone());
+            }
+        }
+
+        if to_updated { self.write(); }
     }
 }
 
@@ -33,6 +60,8 @@ pub struct Todo {
     pub keywords: Vec<String>,
     pub synced: bool,
     pub done: bool,
+    pub done_at: Option<String>,
+    pub is_archived: bool,
 }
 
 impl Todo {
@@ -48,5 +77,19 @@ impl Todo {
             todos = new_list;
         }
         Todos::new(todos).write();
+    }
+
+    pub fn is_done(&self) -> bool {
+        self.done
+    }
+
+    pub fn is_to_archive(&self) -> bool {
+        if self.is_done() && !self.is_archived {
+            let days = compare_date_today(&self.done_at.as_ref().unwrap());
+            println!("days: {}", days);
+            days == 0
+        } else {
+            false
+        }
     }
 }
