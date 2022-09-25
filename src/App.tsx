@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { Todo } from "./models/Todo";
-import List from "./List";
-import Add from "./Add";
+import List from "./components/List/List";
+import Add from "./components/Add/Add";
 
 function App() {
 

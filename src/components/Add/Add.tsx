@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileCirclePlus, faCirclePlus, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { Todo } from "./models/Todo";
+import { Todo } from "../../models/Todo";
 import "./Add.css";
 import { invoke } from "@tauri-apps/api";
 import { useEffect, useState } from "react";
-import KeywordsInput from './components/KeywordsInput';
-import { StatusTodo } from './models/StatusTodo';
+import KeywordsInput from './KeywordsInput';
+import { StatusTodo } from '../../models/StatusTodo';
 
 interface PropsList {
   todoInEdit: Todo | null,
