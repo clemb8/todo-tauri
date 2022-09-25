@@ -97,7 +97,7 @@ impl Todo {
         if self.status == StatusTodo::Done {
             let days = compare_date_today(&self.done_at.as_ref().unwrap());
             println!("days: {}", days);
-            days == 0
+            days >= 1
         } else {
             false
         }

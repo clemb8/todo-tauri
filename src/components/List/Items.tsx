@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle, faCircleCheck, faPenNib, faTrash, faBoxArchive } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faCircleCheck, faPenNib, faTrash, faBoxArchive, faBox } from '@fortawesome/free-solid-svg-icons';
 import { StatusTodo } from "../../models/StatusTodo";
 import { isDone, Todo, todoDone, todoUnDone } from "../../models/Todo";
 import { invoke } from "@tauri-apps/api";
@@ -62,7 +62,7 @@ function Items({ todos, status, onClickItem, onEditItem, onDeleteItem, updateCou
                   <div className='item' key={todo.id}>
                     {status === StatusTodo.Done ? <FontAwesomeIcon icon={faCircleCheck} size="lg" /> : <></>}
                     {status === StatusTodo.Todo ? <FontAwesomeIcon icon={faCircle} size="lg" /> : <></>}
-                    {status === StatusTodo.Archived ? <FontAwesomeIcon icon={faCircleCheck} size="lg" /> : <></>}
+                    {status === StatusTodo.Archived ? <FontAwesomeIcon icon={faBox} size="lg" /> : <></>}
                     <label id={todo.id} className="pending" htmlFor={todo.id} onClick={handleClickItem}>{ todo.title }</label>
                     <div className='icons'>
                       <FontAwesomeIcon className="icon iconEdit" id={todo.id} icon={faPenNib} onClick={handleClickEditItem} size="xs" />

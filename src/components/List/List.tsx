@@ -24,20 +24,24 @@ function List({ todos, onAdd, onClickItem, onEditItem, onDeleteItem }: PropsList
   const [counter, setCounter] = useState({done: 0, todo: 0, archived: 0});
   const [selected, setSelected] = useState([options[0], options[1]]);
 
-  useEffect(() => {
-    setCounter({
-      done: todos.filter((todo) => todo.status === StatusTodo.Done).length,
-      todo: todos.filter((todo) => todo.status === StatusTodo.Todo).length,
-      archived: todos.filter((todo) => todo.status === StatusTodo.Archived).length
+  function updateCounter() {
+    let count = {done: 0, todo: 0, archived: 0};
+    todos.forEach((todo) => {
+      if(todo.status === StatusTodo.Done) {
+        count.done += 1;
+      } else if(todo.status === StatusTodo.Todo) {
+        count.todo += 1;
+      } else {
+        count.archived += 1;
+      }
     });
-  }, [todos]);
+    setCounter(count);
+  }
+
+  useEffect(() => { updateCounter() }, [todos]);
 
   function handleCount() {
-    setCounter({
-      done: todos.filter((todo) => todo.status === StatusTodo.Done).length,
-      todo: todos.filter((todo) => todo.status === StatusTodo.Todo).length,
-      archived: todos.filter((todo) => todo.status === StatusTodo.Archived).length
-    });
+    updateCounter();
   }
 
   return(
