@@ -146,6 +146,18 @@ label:before {
   right: 30px;
 }
 
+.filters {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.mulit-select {
+
+}
+
 @keyframes done {
   0% {
     transform: translateY(20px);
