@@ -9,10 +9,11 @@ import { StatusTodo } from './models/StatusTodo';
 
 interface PropsList {
   todoInEdit: Todo | null,
-  onBackToList: () => void
+  onBackToList: () => void,
+  onUpdateList: (todo: Todo) => void
 }
 
-function Add({ todoInEdit, onBackToList }: PropsList) {
+function Add({ todoInEdit, onBackToList, onUpdateList }: PropsList) {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -46,7 +47,7 @@ function Add({ todoInEdit, onBackToList }: PropsList) {
       newTodo = { id: todoInEdit.id, title, description, keywords, synced: todoInEdit.synced, status: todoInEdit.status, doneAt: todoInEdit.doneAt };
     }
     await invoke("write", { currentTodo: newTodo });
-    onBackToList();
+    onUpdateList(newTodo);
   }
 
   return (
