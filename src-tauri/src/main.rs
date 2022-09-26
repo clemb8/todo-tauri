@@ -30,7 +30,7 @@ fn delete(current_todo: Todo) {
 }
 
 fn main() {
-    
+  
     schedule_check_todo_to_archive();
 
     tauri::Builder::default()
